@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Header Bar -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="14dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="[←]"
+            android:background="@null"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FocusTimer [settings]"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="[save]"
+            android:background="@null"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <ScrollView
+        android:id="@+id/rootScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- THEME SECTION -->
+            <TextView
+                android:id="@+id/tvThemeHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ APPEARANCE ]"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/rowDarkTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
+
+                <TextView
+                    android:id="@+id/tvThemeLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dark Monochrome Mode"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cbDarkMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="14dp" />
+
+            <!-- TIMER DURATIONS -->
+            <TextView
+                android:id="@+id/tvDurationsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ TIMER INTERVALS ]"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Focus duration -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvFocusLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Focus Duration"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnFocusMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[-]"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvFocusValue"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:text="25 min"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnFocusPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[+]"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Short break -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/tvShortBreakLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Short Break"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnShortMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[-]"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvShortValue"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:text="5 min"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnShortPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[+]"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Long break -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/tvLongBreakLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Long Break"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnLongMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[-]"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvLongValue"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:text="15 min"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnLongPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[+]"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Long break interval -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/tvIntervalLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Long Break Every"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnIntervalMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[-]"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvIntervalValue"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:text="4 sets"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnIntervalPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:text="[+]"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="14dp" />
+
+            <!-- ALERTS SECTION -->
+            <TextView
+                android:id="@+id/tvAlertsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ NOTIFICATIONS ]"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/tvSoundLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sound Chimes"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cbSound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/tvVibrateLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vibration Pulse"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cbVibrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/tvAutoBreakLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Auto-Start Breaks"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cbAutoBreak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

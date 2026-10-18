@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Top Header Bar -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/tvAppTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FocusTimer"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/btnStats"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="[stats]"
+            android:background="@null"
+            android:textSize="12sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+
+        <Button
+            android:id="@+id/btnTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="[theme]"
+            android:background="@null"
+            android:textSize="12sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="[settings]"
+            android:background="@null"
+            android:textSize="12sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <!-- State & Cycle Indicator Banner -->
+    <LinearLayout
+        android:id="@+id/bannerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/tvStateBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[ FOCUS SESSION ]"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <TextView
+            android:id="@+id/tvCycleDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="● ○ ○ ○   (session 1 of 4)"
+            android:textSize="12sp"
+            android:layout_marginTop="3dp" />
+    </LinearLayout>
+
+    <!-- Center Ring & Countdown Area -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <com.focustimer.app.TimerRingView
+            android:id="@+id/timerRing"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvCountdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25:00"
+                android:textSize="44sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvStateSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ ready to focus ]"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:gravity="center" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Bottom Action Controls -->
+    <LinearLayout
+        android:id="@+id/bottomControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="12dp">
+
+        <!-- Primary Start / Pause Button -->
+        <Button
+            android:id="@+id/btnPrimaryAction"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="[ START ]"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Secondary Actions (Skip / Reset) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnSkip"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="[ skip ]"
+                android:textSize="12sp"
+                android:layout_marginRight="4dp" />
+
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="[ reset ]"
+                android:textSize="12sp"
+                android:layout_marginLeft="4dp" />
+        </LinearLayout>
+
+        <!-- Keyboard Hint -->
+        <TextView
+            android:id="@+id/tvKeyboardHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[space] start/pause • [s] skip • [r] reset"
+            android:textSize="11sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+</LinearLayout>
