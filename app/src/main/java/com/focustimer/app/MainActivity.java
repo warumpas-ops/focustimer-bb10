@@ -2,12 +2,14 @@ package com.focustimer.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +27,9 @@ public class MainActivity extends Activity {
 
     private LinearLayout bannerLayout;
     private TextView tvStateBanner;
-    private TextView tvCycleDots;
+    private ImageView ivMoonAnim;
+    private LinearLayout layoutCycleStars;
+    private TextView tvCycleText;
 
     private TimerRingView timerRing;
     private TextView tvCountdown;
@@ -86,7 +90,9 @@ public class MainActivity extends Activity {
 
         bannerLayout = (LinearLayout) findViewById(R.id.bannerLayout);
         tvStateBanner = (TextView) findViewById(R.id.tvStateBanner);
-        tvCycleDots = (TextView) findViewById(R.id.tvCycleDots);
+        ivMoonAnim = (ImageView) findViewById(R.id.ivMoonAnim);
+        layoutCycleStars = (LinearLayout) findViewById(R.id.layoutCycleStars);
+        tvCycleText = (TextView) findViewById(R.id.tvCycleText);
 
         timerRing = (TimerRingView) findViewById(R.id.timerRing);
         tvCountdown = (TextView) findViewById(R.id.tvCountdown);
@@ -152,8 +158,18 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         applyCurrentTheme();
+        startMoonAnimation();
         if (!isRunning && !isPaused) {
             initTimerForCurrentState();
+        }
+    }
+
+    private void startMoonAnimation() {
+        if (ivMoonAnim != null && ivMoonAnim.getDrawable() instanceof AnimationDrawable) {
+            AnimationDrawable anim = (AnimationDrawable) ivMoonAnim.getDrawable();
+            if (!anim.isRunning()) {
+                anim.start();
+            }
         }
     }
 
@@ -191,6 +207,7 @@ public class MainActivity extends Activity {
             tvStateSubtitle.setText(currentState == TimerState.FOCUS ? "[ stay focused ]" : "[ rest your eyes ]");
             handler.post(timerRunnable);
         }
+        updateCycleDisplay();
     }
 
     private void resetCurrentTimer() {
@@ -204,6 +221,7 @@ public class MainActivity extends Activity {
         initTimerForCurrentState();
         btnPrimaryAction.setText(currentState == TimerState.FOCUS ? "[ START FOCUS ]" : "[ START BREAK ]");
         tvStateSubtitle.setText("[ ready ]");
+        updateCycleDisplay();
     }
 
     private void skipSession() {
@@ -278,7 +296,6 @@ public class MainActivity extends Activity {
         timerRing.setProgress(progress);
 
         updateStateBanner();
-        updateCycleDisplay();
     }
 
     private void updateStateBanner() {
@@ -292,21 +309,43 @@ public class MainActivity extends Activity {
     }
 
     private void updateCycleDisplay() {
+        if (layoutCycleStars == null) return;
         int interval = prefs.getLongBreakInterval();
-        StringBuilder sb = new StringBuilder();
         int activeSession = (completedPomodorosInCycle % interval) + 1;
+        boolean isDark = prefs.isDarkTheme();
+
+        layoutCycleStars.removeAllViews();
+        float density = getResources().getDisplayMetrics().density;
+        int starSizePx = (int) (18 * density);
+        int marginPx = (int) (2.5f * density);
 
         for (int i = 1; i <= interval; i++) {
+            ImageView starView = new ImageView(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(starSizePx, starSizePx);
+            lp.setMargins(marginPx, 0, marginPx, 0);
+            starView.setLayoutParams(lp);
+
             if (i <= completedPomodorosInCycle) {
-                sb.append("● ");
-            } else if (i == activeSession && currentState == TimerState.FOCUS) {
-                sb.append("◐ ");
+                // Completed session star sparkles
+                starView.setImageResource(isDark ? R.drawable.star_sparkle_dark : R.drawable.star_sparkle_light);
+                if (starView.getDrawable() instanceof AnimationDrawable) {
+                    ((AnimationDrawable) starView.getDrawable()).start();
+                }
+            } else if (i == activeSession && currentState == TimerState.FOCUS && isRunning) {
+                // Active session running: sparkle
+                starView.setImageResource(isDark ? R.drawable.star_sparkle_dark : R.drawable.star_sparkle_light);
+                if (starView.getDrawable() instanceof AnimationDrawable) {
+                    ((AnimationDrawable) starView.getDrawable()).start();
+                }
             } else {
-                sb.append("○ ");
+                // Empty / upcoming star outline
+                starView.setImageResource(isDark ? R.drawable.star_empty : R.drawable.star_light_empty);
             }
+            layoutCycleStars.addView(starView);
         }
-        sb.append("  (session ").append(activeSession).append(" of ").append(interval).append(")");
-        tvCycleDots.setText(sb.toString().trim());
+
+        String phaseLabel = (currentState == TimerState.FOCUS) ? "session" : "break";
+        tvCycleText.setText(String.format("(%s %d of %d)", phaseLabel, activeSession, interval));
     }
 
     private void setKeepScreenOn(boolean keepOn) {
@@ -318,21 +357,31 @@ public class MainActivity extends Activity {
     }
 
     private void applyCurrentTheme() {
-        ThemeManager.Palette p = new ThemeManager.Palette(prefs.isDarkTheme());
+        boolean isDark = prefs.isDarkTheme();
+        ThemeManager.Palette p = new ThemeManager.Palette(isDark);
 
         rootView.setBackgroundColor(p.bg);
         headerBar.setBackgroundColor(p.headerBg);
         tvAppTitle.setTextColor(p.textPrimary);
+        tvAppTitle.setText("Luna");
 
         btnStats.setTextColor(p.textSecondary);
         btnTheme.setTextColor(p.textSecondary);
-        btnTheme.setText(prefs.isDarkTheme() ? "[light]" : "[dark]");
+        btnTheme.setText(isDark ? "[light]" : "[dark]");
         btnSettings.setTextColor(p.textSecondary);
         headerDivider.setBackgroundColor(p.divider);
 
         bannerLayout.setBackgroundColor(p.bg);
         tvStateBanner.setTextColor(p.textPrimary);
-        tvCycleDots.setTextColor(p.textSecondary);
+        tvCycleText.setTextColor(p.textSecondary);
+
+        // Moon animation based on theme
+        ivMoonAnim.setImageResource(isDark ? R.drawable.moon_anim_dark : R.drawable.moon_anim_light);
+        if (ivMoonAnim.getDrawable() instanceof AnimationDrawable) {
+            ((AnimationDrawable) ivMoonAnim.getDrawable()).start();
+        }
+
+        updateCycleDisplay();
 
         timerRing.setColors(p.ringBg, p.ringProgress);
         tvCountdown.setTextColor(p.textPrimary);

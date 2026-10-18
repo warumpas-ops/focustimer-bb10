@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="FocusTimer"
+            android:text="Luna"
             android:textSize="17sp"
             android:textStyle="bold"
             android:gravity="center_vertical" />
@@ -80,13 +80,35 @@
             android:textStyle="bold"
             android:letterSpacing="0.05" />
 
-        <TextView
-            android:id="@+id/tvCycleDots"
+        <LinearLayout
+            android:id="@+id/cycleRowLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="● ○ ○ ○   (session 1 of 4)"
-            android:textSize="12sp"
-            android:layout_marginTop="3dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/ivMoonAnim"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="8dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutCycleStars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/tvCycleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(session 1 of 4)"
+                android:textSize="12sp"
+                android:layout_marginLeft="6dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Center Ring & Countdown Area -->
