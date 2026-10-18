@@ -363,7 +363,7 @@ public class MainActivity extends Activity {
         rootView.setBackgroundColor(p.bg);
         headerBar.setBackgroundColor(p.headerBg);
         tvAppTitle.setTextColor(p.textPrimary);
-        tvAppTitle.setText("Luna");
+        tvAppTitle.setText("Orbit");
 
         btnStats.setTextColor(p.textSecondary);
         btnTheme.setTextColor(p.textSecondary);

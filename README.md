@@ -1,4 +1,4 @@
-# Luna (BB10)
+# Orbit (BB10)
 
 > A distraction-free Pomodoro & focus timer app built specifically for BlackBerry 10 devices (Q10, Q5, Classic, Passport) running the Android 4.3 runtime (API 18). Styled with **Space Grotesk** typography, animated pixel crescent moon, sparkling diamond stars, and a minimalist monotone aesthetic.
 
@@ -33,10 +33,10 @@
 
 ## 📲 Sideloading onto BlackBerry 10
 
-1. Download **`Luna.apk`** from [Releases](https://github.com/warumpas-ops/focustimer-bb10/releases).
+1. Download **`Orbit.apk`** from [Releases](https://github.com/warumpas-ops/focustimer-bb10/releases).
 2. Transfer it to your BlackBerry via USB or copy directly onto your MicroSD card.
 3. Open the **File Manager** app on your BB10 device.
-4. Tap `Luna.apk` and tap **Install** in the top-right corner.
+4. Tap `Orbit.apk` and tap **Install** in the top-right corner.
 
 ---
 
