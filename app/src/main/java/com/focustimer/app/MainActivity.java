@@ -316,8 +316,8 @@ public class MainActivity extends Activity {
 
         layoutCycleStars.removeAllViews();
         float density = getResources().getDisplayMetrics().density;
-        int starSizePx = (int) (18 * density);
-        int marginPx = (int) (2.5f * density);
+        int starSizePx = (int) (15 * density);
+        int marginPx = (int) (2f * density);
 
         for (int i = 1; i <= interval; i++) {
             ImageView starView = new ImageView(this);
