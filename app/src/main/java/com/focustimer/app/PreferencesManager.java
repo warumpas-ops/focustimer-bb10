@@ -21,14 +21,28 @@ public class PreferencesManager {
     private static final String KEY_STATS_DATE = "stats_date";
     private static final String KEY_STATS_TODAY_COUNT = "stats_today_count";
     private static final String KEY_STATS_TODAY_MINUTES = "stats_today_minutes";
+    private static final String KEY_STATS_TODAY_SECONDS = "stats_today_seconds";
     private static final String KEY_STATS_TOTAL_COUNT = "stats_total_count";
     private static final String KEY_STATS_TOTAL_MINUTES = "stats_total_minutes";
+    private static final String KEY_STATS_TOTAL_SECONDS = "stats_total_seconds";
 
     private final SharedPreferences prefs;
 
     public PreferencesManager(Context ctx) {
         this.prefs = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        migrateLegacyMinutesIfNeeded();
         checkDayReset();
+    }
+
+    private void migrateLegacyMinutesIfNeeded() {
+        if (!prefs.contains(KEY_STATS_TOTAL_SECONDS) && prefs.contains(KEY_STATS_TOTAL_MINUTES)) {
+            int oldTotalMin = prefs.getInt(KEY_STATS_TOTAL_MINUTES, 0);
+            int oldTodayMin = prefs.getInt(KEY_STATS_TODAY_MINUTES, 0);
+            prefs.edit()
+                .putInt(KEY_STATS_TOTAL_SECONDS, oldTotalMin * 60)
+                .putInt(KEY_STATS_TODAY_SECONDS, oldTodayMin * 60)
+                .commit();
+        }
     }
 
     public boolean isDarkTheme() {
@@ -109,22 +123,40 @@ public class PreferencesManager {
                 .putString(KEY_STATS_DATE, today)
                 .putInt(KEY_STATS_TODAY_COUNT, 0)
                 .putInt(KEY_STATS_TODAY_MINUTES, 0)
+                .putInt(KEY_STATS_TODAY_SECONDS, 0)
                 .commit();
         }
     }
 
     public void recordCompletedFocusSession(int minutes) {
         checkDayReset();
+        int secondsToAdd = minutes * 60;
         int todayCount = prefs.getInt(KEY_STATS_TODAY_COUNT, 0) + 1;
-        int todayMinutes = prefs.getInt(KEY_STATS_TODAY_MINUTES, 0) + minutes;
+        int todaySeconds = getTodaySeconds() + secondsToAdd;
         int totalCount = prefs.getInt(KEY_STATS_TOTAL_COUNT, 0) + 1;
-        int totalMinutes = prefs.getInt(KEY_STATS_TOTAL_MINUTES, 0) + minutes;
+        int totalSeconds = getTotalSeconds() + secondsToAdd;
 
         prefs.edit()
             .putInt(KEY_STATS_TODAY_COUNT, todayCount)
-            .putInt(KEY_STATS_TODAY_MINUTES, todayMinutes)
+            .putInt(KEY_STATS_TODAY_SECONDS, todaySeconds)
+            .putInt(KEY_STATS_TODAY_MINUTES, todaySeconds / 60)
             .putInt(KEY_STATS_TOTAL_COUNT, totalCount)
-            .putInt(KEY_STATS_TOTAL_MINUTES, totalMinutes)
+            .putInt(KEY_STATS_TOTAL_SECONDS, totalSeconds)
+            .putInt(KEY_STATS_TOTAL_MINUTES, totalSeconds / 60)
+            .commit();
+    }
+
+    public void recordPartialFocusSeconds(int seconds) {
+        if (seconds <= 0) return;
+        checkDayReset();
+        int todaySeconds = getTodaySeconds() + seconds;
+        int totalSeconds = getTotalSeconds() + seconds;
+
+        prefs.edit()
+            .putInt(KEY_STATS_TODAY_SECONDS, todaySeconds)
+            .putInt(KEY_STATS_TODAY_MINUTES, todaySeconds / 60)
+            .putInt(KEY_STATS_TOTAL_SECONDS, totalSeconds)
+            .putInt(KEY_STATS_TOTAL_MINUTES, totalSeconds / 60)
             .commit();
     }
 
@@ -133,16 +165,24 @@ public class PreferencesManager {
         return prefs.getInt(KEY_STATS_TODAY_COUNT, 0);
     }
 
-    public int getTodayMinutes() {
+    public int getTodaySeconds() {
         checkDayReset();
-        return prefs.getInt(KEY_STATS_TODAY_MINUTES, 0);
+        return prefs.getInt(KEY_STATS_TODAY_SECONDS, prefs.getInt(KEY_STATS_TODAY_MINUTES, 0) * 60);
+    }
+
+    public int getTodayMinutes() {
+        return getTodaySeconds() / 60;
     }
 
     public int getTotalCount() {
         return prefs.getInt(KEY_STATS_TOTAL_COUNT, 0);
     }
 
+    public int getTotalSeconds() {
+        return prefs.getInt(KEY_STATS_TOTAL_SECONDS, prefs.getInt(KEY_STATS_TOTAL_MINUTES, 0) * 60);
+    }
+
     public int getTotalMinutes() {
-        return prefs.getInt(KEY_STATS_TOTAL_MINUTES, 0);
+        return getTotalSeconds() / 60;
     }
 }

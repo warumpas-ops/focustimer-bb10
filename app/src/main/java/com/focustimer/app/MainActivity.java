@@ -191,6 +191,7 @@ public class MainActivity extends Activity {
         NotificationHelper.playClick(prefs);
         if (isRunning) {
             // Pause
+            remainingMillis = Math.max(0, targetEndTime - System.currentTimeMillis());
             isRunning = false;
             isPaused = true;
             handler.removeCallbacks(timerRunnable);
@@ -227,13 +228,33 @@ public class MainActivity extends Activity {
     private void skipSession() {
         NotificationHelper.playClick(prefs);
         if (isRunning) {
+            remainingMillis = Math.max(0, targetEndTime - System.currentTimeMillis());
             isRunning = false;
             handler.removeCallbacks(timerRunnable);
         }
         isPaused = false;
         setKeepScreenOn(false);
 
-        // Advance phase directly
+        // If skipping a focus session that was started (paused or running),
+        // credit the exact elapsed seconds so no study time is ever lost.
+        if (currentState == TimerState.FOCUS && totalDurationMillis > remainingMillis) {
+            long elapsedMillis = totalDurationMillis - remainingMillis;
+            int elapsedSeconds = (int) (elapsedMillis / 1000L);
+            if (elapsedSeconds > 0) {
+                prefs.recordPartialFocusSeconds(elapsedSeconds);
+                String timeStr;
+                if (elapsedSeconds < 60) {
+                    timeStr = elapsedSeconds + "s";
+                } else {
+                    int m = elapsedSeconds / 60;
+                    int s = elapsedSeconds % 60;
+                    timeStr = (s > 0) ? (m + "m " + s + "s") : (m + "m");
+                }
+                android.widget.Toast.makeText(this, "+" + timeStr + " focused recorded", android.widget.Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Advance phase directly (false = don't count as full pomodoro)
         advanceToNextPhase(false);
     }
 

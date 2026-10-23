@@ -73,14 +73,27 @@ public class StatsActivity extends Activity {
 
     private void loadStats() {
         int todayCount = prefs.getTodayCount();
-        int todayMinutes = prefs.getTodayMinutes();
+        int todaySeconds = prefs.getTodaySeconds();
         int totalCount = prefs.getTotalCount();
-        int totalMinutes = prefs.getTotalMinutes();
+        int totalSeconds = prefs.getTotalSeconds();
 
         tvTodayPomodoros.setText(todayCount + " pomodoro" + (todayCount == 1 ? "" : "s"));
-        tvTodaySubtitle.setText(todayMinutes + " minutes of focused work today");
 
-        double totalHours = Math.round((totalMinutes / 60.0) * 10.0) / 10.0;
+        String todayFormatted;
+        if (todaySeconds < 60) {
+            todayFormatted = todaySeconds + " second" + (todaySeconds == 1 ? "" : "s");
+        } else {
+            int m = todaySeconds / 60;
+            int s = todaySeconds % 60;
+            if (s > 0) {
+                todayFormatted = m + "m " + s + "s";
+            } else {
+                todayFormatted = m + " minute" + (m == 1 ? "" : "s");
+            }
+        }
+        tvTodaySubtitle.setText(todayFormatted + " of focused work today");
+
+        double totalHours = Math.round((totalSeconds / 3600.0) * 10.0) / 10.0;
         tvTotalPomodoros.setText(totalCount + " total sessions");
         tvTotalSubtitle.setText(totalHours + " total hours focused");
     }
